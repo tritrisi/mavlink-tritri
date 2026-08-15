@@ -17,29 +17,28 @@ The second (ADDR A, antenna pair 1) is connected to MAVLink instance 0 (Normal).
 
 ```mermaid
 flowchart LR
-  C2["Command and control<br/>MAVLink sysid 200"]
+  C2["Command and control<br/>sysid 200"]
 
-  subgraph pair2["Antenna pair 2"]
-    RC["LR24-F ADDR B"]
+  subgraph pair2["Antenna pair 2 · C2"]
+    RC["LR24-F · ADDR B"]
   end
 
-  subgraph icept["Speed0 Interceptor"]
-    I2["MAVLink instance 2 Custom<br/>MAVLink sysid 1"]
-    I0["MAVLink instance 0 Normal<br/>MAVLink sysid 1"]
-    RX["RadioMaster RP1<br/>2.4 GHz ELRS Nano Receiver V2"]
+  subgraph icept["Speed0 interceptor · sysid 1"]
+    I2["MAVLink instance 2 · Custom"]
+    I0["MAVLink instance 0 · Normal"]
+    RX["RadioMaster RP1 · ELRS"]
   end
 
-  subgraph pair1["Antenna pair 1"]
-    RQ["LR24-F ADDR A"]
+  subgraph pair1["Antenna pair 1 · app"]
+    RQ["LR24-F · ADDR A"]
   end
 
   APP["TRITRI app"]
 
-  subgraph elrs["ExpressLRS"]
+  subgraph elrs["Manual override"]
     E["ELRS"]
+    RM["RadioMaster Pocket"]
   end
-
-  RM["RadioMaster Pocket"]
 
   C2 --- RC
   RC --- I2
@@ -106,27 +105,30 @@ Speed0 vehicle states (arm, takeoff, intercept, abort, disarm):
 stateDiagram-v2
   direction TB
 
-  [*] --> StandbyDisarmed: C2 Standby mode
+  state "Standby · disarmed" as Disarmed
+  state "Standby · armed" as Armed
+  state "Takeoff" as Takeoff
+  state "Intercept" as Intercept
+  state "Check-fire hold" as Hold
 
-  StandbyDisarmed --> StandbyArmed: HANDOVER\nACK Accepted
-  StandbyDisarmed --> StandbyDisarmed: HANDOVER\nACK Rejected / Failed
+  [*] --> Disarmed: C2 standby
 
-  StandbyArmed --> StandbyDisarmed: valid_until,\nno FIRES\nACK Expired + disarm
+  Disarmed --> Armed: HANDOVER · ACK Accepted
+  Disarmed --> Disarmed: HANDOVER · ACK Rejected
 
-  StandbyArmed --> Takeoff: FIRES\nACK Accepted
-  StandbyDisarmed --> Takeoff: FIRES only\narm + ACK Accepted
+  Armed --> Disarmed: HANDOVER expired · disarm
+  Armed --> Takeoff: FIRES · ACK Accepted
+  Disarmed --> Takeoff: FIRES only · ACK Accepted
 
-  Takeoff --> Kill: takeoff done
-  Takeoff --> StandbyArmed: ABORT during takeoff
+  Takeoff --> Intercept: takeoff complete
+  Takeoff --> Armed: ABORT
 
-  Kill --> KillHold: CHECK_FIRE
-  KillHold --> Kill: RESUME
+  Intercept --> Hold: CHECK_FIRE
+  Hold --> Intercept: RESUME
+  Intercept --> Intercept: RETARGET
+  Intercept --> Armed: ABORT or mission end
 
-  Kill --> Kill: RETARGET
-  Kill --> StandbyArmed: ABORT\nhold, armed
-
-  Kill --> StandbyArmed: mission end
-  StandbyArmed --> [*]: disarm (manual / expiry)
+  Armed --> [*]: disarm
 ```
 
 </details>
