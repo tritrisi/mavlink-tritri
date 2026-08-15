@@ -10,45 +10,7 @@ The second (ADDR A, antenna pair 1) is connected to MAVLink instance 0 (Normal).
 
 **RadioMaster Pocket** acts as a manual override and kill switch.
 
-![Communication architecture](diagrams/architecture.svg)
-
-<details>
-<summary>Mermaid source</summary>
-
-```mermaid
-flowchart LR
-  C2["Command and control<br/>sysid 200"]
-
-  subgraph pair2["Antenna pair 2 · C2"]
-    RC["LR24-F · ADDR B"]
-  end
-
-  subgraph icept["Speed0 interceptor · sysid 1"]
-    I2["MAVLink instance 2 · Custom"]
-    I0["MAVLink instance 0 · Normal"]
-    RX["RadioMaster RP1 · ELRS"]
-  end
-
-  subgraph pair1["Antenna pair 1 · app"]
-    RQ["LR24-F · ADDR A"]
-  end
-
-  APP["TRITRI app"]
-
-  subgraph elrs["Manual override"]
-    E["ELRS"]
-    RM["RadioMaster Pocket"]
-  end
-
-  C2 --- RC
-  RC --- I2
-  I0 --- RQ
-  RQ --- APP
-  RX --- E
-  E --- RM
-```
-
-</details>
+![Communication architecture](diagrams/architecture.png)
 
 
 
@@ -60,78 +22,13 @@ Speed0 uses MAVLink 2 dialect **tritri** on all MAVLink links. The dialect root 
 
 Traffic on antenna pair 2 between command and control and MAVLink instance 2.
 
-![C2 message sequence](diagrams/c2-sequence.svg)
-
-<details>
-<summary>Mermaid source</summary>
-
-```mermaid
-sequenceDiagram
-  participant C2 as Command and control
-  participant M2 as MAVLink instance 2
-
-  Note over C2,M2: Steady stream
-  loop TRITRI_TRACK 1 Hz, TRITRI_TARGET 5 Hz
-    C2->>M2: TRITRI_TRACK 53900 hostile
-    C2->>M2: TRITRI_TARGET 53901 hostile
-    M2->>C2: PARTICIPANT_POSITION 53003
-    M2->>C2: TRITRI_TRACK 53900 origin_sysid 1
-    M2->>C2: TRITRI_TARGET 53901
-  end
-
-  Note over C2,M2: Engagement
-  C2->>M2: TARGET_HANDOVER 53002
-  M2->>C2: MAVLINK_M_ACK 53004
-  C2->>M2: FIRES 53020
-  M2->>C2: MAVLINK_M_ACK 53004
-  Note over C2,M2: TRITRI_TARGET continues
-  C2->>M2: ENGAGEMENT_DIRECTIVE 53023
-  M2->>C2: MAVLINK_M_ACK 53004
-  M2->>C2: BATTLE_DAMAGE_ASSESSMENT 53022
-```
-
-</details>
+![C2 message sequence](diagrams/c2-sequence.png)
 
 ### Engagement workflow
 
 Speed0 vehicle states (arm, takeoff, intercept, abort, disarm):
 
-![Engagement workflow](diagrams/engagement-workflow.svg)
-
-<details>
-<summary>Mermaid source</summary>
-
-```mermaid
-stateDiagram-v2
-  direction TB
-
-  state "Standby · disarmed" as Disarmed
-  state "Standby · armed" as Armed
-  state "Takeoff" as Takeoff
-  state "Intercept" as Intercept
-  state "Check-fire hold" as Hold
-
-  [*] --> Disarmed: C2 standby
-
-  Disarmed --> Armed: HANDOVER · ACK Accepted
-  Disarmed --> Disarmed: HANDOVER · ACK Rejected
-
-  Armed --> Disarmed: HANDOVER expired · disarm
-  Armed --> Takeoff: FIRES · ACK Accepted
-  Disarmed --> Takeoff: FIRES only · ACK Accepted
-
-  Takeoff --> Intercept: takeoff complete
-  Takeoff --> Armed: ABORT
-
-  Intercept --> Hold: CHECK_FIRE
-  Hold --> Intercept: RESUME
-  Intercept --> Intercept: RETARGET
-  Intercept --> Armed: ABORT or mission end
-
-  Armed --> [*]: disarm
-```
-
-</details>
+![Engagement workflow](diagrams/engagement-workflow.png)
 
 The LR24-F link is bandwidth-limited. Command and control uses MAVLink instance 2 in **Custom** mode with a lean message set only.
 
