@@ -195,7 +195,7 @@
   ============================================================================
 -->
 <mavlink>
-  <include>common.xml</include>
+  <include>development.xml</include>
   <version>1</version>
   <dialect>0</dialect>
 

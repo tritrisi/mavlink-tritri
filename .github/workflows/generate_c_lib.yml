@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "military.xml"
+      - "tritri.xml"
       - ".github/workflows/generate_c_lib.yml"
   workflow_dispatch:
 
@@ -41,9 +42,9 @@ jobs:
         run: |
           pip install future lxml
 
-      - name: Place dialect definition alongside other message definitions
+      - name: Place dialect definitions alongside other message definitions
         run: |
-          cp military.xml mavlink/message_definitions/v1.0/
+          cp military.xml tritri.xml mavlink/message_definitions/v1.0/
 
       - name: Generate C headers
         run: |
@@ -56,7 +57,7 @@ jobs:
             --wire-protocol=2.0 \
             --no-validate \
             --output=generated/include/mavlink/v2.0 \
-            mavlink/message_definitions/v1.0/military.xml
+            mavlink/message_definitions/v1.0/tritri.xml
 
       - name: Commit and push generated headers
         run: |

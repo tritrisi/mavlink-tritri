@@ -66,6 +66,17 @@ window as the messages.
 | 53100-53899 | Future shared MAVLink-M allocations as the dialect grows. |
 | 53900-53999 | Private/downstream implementor-specific messages. These are not shared IDs and require a private ICD between participating systems. |
 
+## TRITRI private messages
+
+Assigned in `tritri.xml` for the Speed0 C-UAS COP path:
+
+| Name | ID | Notes |
+| --- | --- | --- |
+| TRITRI_TRACK | 53900 | Track identity; correlation spine for live COP. |
+| TRITRI_TARGET | 53901 | Kinematics plus `track_uid` for correlation. |
+
+`53902-53999` remain available for future TRITRI program extensions.
+
 ## Prior Dronecode `military.xml` IDs
 
 The Dronecode/mavlink-military repo previously carried an 11-message preliminary
