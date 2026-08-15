@@ -1,0 +1,24 @@
+stateDiagram-v2
+  direction TB
+
+  [*] --> StandbyDisarmed: C2 Standby mode
+
+  StandbyDisarmed --> StandbyArmed: HANDOVER\nACK Accepted
+  StandbyDisarmed --> StandbyDisarmed: HANDOVER\nACK Rejected / Failed
+
+  StandbyArmed --> StandbyDisarmed: valid_until,\nno FIRES\nACK Expired + disarm
+
+  StandbyArmed --> Takeoff: FIRES\nACK Accepted
+  StandbyDisarmed --> Takeoff: FIRES only\narm + ACK Accepted
+
+  Takeoff --> Kill: takeoff done
+  Takeoff --> StandbyArmed: ABORT during takeoff
+
+  Kill --> KillHold: CHECK_FIRE
+  KillHold --> Kill: RESUME
+
+  Kill --> Kill: RETARGET
+  Kill --> StandbyArmed: ABORT\nhold, armed
+
+  Kill --> StandbyArmed: mission end
+  StandbyArmed --> [*]: disarm (manual / expiry)

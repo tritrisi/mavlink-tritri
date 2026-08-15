@@ -1,0 +1,22 @@
+sequenceDiagram
+  participant C2 as Command and control
+  participant M2 as MAVLink instance 2
+
+  Note over C2,M2: Steady stream
+  loop TRITRI_TRACK 1 Hz, TRITRI_TARGET 5 Hz
+    C2->>M2: TRITRI_TRACK 53900 hostile
+    C2->>M2: TRITRI_TARGET 53901 hostile
+    M2->>C2: PARTICIPANT_POSITION 53003
+    M2->>C2: TRITRI_TRACK 53900 origin_sysid 1
+    M2->>C2: TRITRI_TARGET 53901
+  end
+
+  Note over C2,M2: Engagement
+  C2->>M2: TARGET_HANDOVER 53002
+  M2->>C2: MAVLINK_M_ACK 53004
+  C2->>M2: FIRES 53020
+  M2->>C2: MAVLINK_M_ACK 53004
+  Note over C2,M2: TRITRI_TARGET continues
+  C2->>M2: ENGAGEMENT_DIRECTIVE 53023
+  M2->>C2: MAVLINK_M_ACK 53004
+  M2->>C2: BATTLE_DAMAGE_ASSESSMENT 53022

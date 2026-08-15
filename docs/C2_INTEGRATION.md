@@ -10,6 +10,11 @@ The second (ADDR A, antenna pair 1) is connected to MAVLink instance 0 (Normal).
 
 **RadioMaster Pocket** acts as a manual override and kill switch.
 
+![Communication architecture](diagrams/architecture.svg)
+
+<details>
+<summary>Mermaid source</summary>
+
 ```mermaid
 flowchart LR
   C2["Command and control<br/>MAVLink sysid 200"]
@@ -42,9 +47,9 @@ flowchart LR
   RQ --- APP
   RX --- E
   E --- RM
-
-
 ```
+
+</details>
 
 
 
@@ -55,6 +60,11 @@ Speed0 uses MAVLink 2 dialect **tritri** on all MAVLink links. The dialect root 
 ### C2 side
 
 Traffic on antenna pair 2 between command and control and MAVLink instance 2.
+
+![C2 message sequence](diagrams/c2-sequence.svg)
+
+<details>
+<summary>Mermaid source</summary>
 
 ```mermaid
 sequenceDiagram
@@ -81,9 +91,16 @@ sequenceDiagram
   M2->>C2: BATTLE_DAMAGE_ASSESSMENT 53022
 ```
 
+</details>
+
 ### Engagement workflow
 
 Speed0 vehicle states (arm, takeoff, intercept, abort, disarm):
+
+![Engagement workflow](diagrams/engagement-workflow.svg)
+
+<details>
+<summary>Mermaid source</summary>
 
 ```mermaid
 stateDiagram-v2
@@ -111,6 +128,8 @@ stateDiagram-v2
   Kill --> StandbyArmed: mission end
   StandbyArmed --> [*]: disarm (manual / expiry)
 ```
+
+</details>
 
 The LR24-F link is bandwidth-limited. Command and control uses MAVLink instance 2 in **Custom** mode with a lean message set only.
 

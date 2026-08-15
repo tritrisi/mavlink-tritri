@@ -1,0 +1,31 @@
+flowchart LR
+  C2["Command and control<br/>MAVLink sysid 200"]
+
+  subgraph pair2["Antenna pair 2"]
+    RC["LR24-F ADDR B"]
+  end
+
+  subgraph icept["Speed0 Interceptor"]
+    I2["MAVLink instance 2 Custom<br/>MAVLink sysid 1"]
+    I0["MAVLink instance 0 Normal<br/>MAVLink sysid 1"]
+    RX["RadioMaster RP1<br/>2.4 GHz ELRS Nano Receiver V2"]
+  end
+
+  subgraph pair1["Antenna pair 1"]
+    RQ["LR24-F ADDR A"]
+  end
+
+  APP["TRITRI app"]
+
+  subgraph elrs["ExpressLRS"]
+    E["ELRS"]
+  end
+
+  RM["RadioMaster Pocket"]
+
+  C2 --- RC
+  RC --- I2
+  I0 --- RQ
+  RQ --- APP
+  RX --- E
+  E --- RM
