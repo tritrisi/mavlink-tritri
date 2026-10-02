@@ -19,10 +19,11 @@ export default defineConfig({
 
   themeConfig: {
     logo: {
-      src: "/site/tritri_logo.svg",
+      // PNG avoids SVG nesting quirks some browsers hit with the exported mark.
+      src: "/site/tritri_logo.png",
       alt: "TRITRI",
     },
-    siteTitle: "MAVLink",
+    siteTitle: "TRITRI",
     sidebar: sidebar("en"),
     externalLinkIcon: true,
     search: { provider: "local" },

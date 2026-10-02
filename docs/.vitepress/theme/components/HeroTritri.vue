@@ -4,7 +4,7 @@ import { withBase } from "vitepress";
 
 <template>
   <a class="hero-tritri" href="https://tritri.si" title="TRITRI">
-    <img :src="withBase('/site/tritri_logo.svg')" alt="TRITRI" />
+    <img :src="withBase('/site/tritri_logo.png')" alt="TRITRI" width="96" height="89" />
   </a>
 </template>
 
@@ -18,6 +18,7 @@ import { withBase } from "vitepress";
 .hero-tritri img {
   height: 72px;
   width: auto;
+  object-fit: contain;
 }
 @media (max-width: 959px) {
   .hero-tritri {
