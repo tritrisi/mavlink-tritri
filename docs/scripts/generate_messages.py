@@ -110,10 +110,11 @@ def main():
 
     gen.MAVXML.get_top_level_docs = top_level_docs
 
-    # tritri.xml includes military.xml, which includes common.xml by relative
-    # path, so stage both dialect files next to the upstream definitions.
+    # tritri.xml includes military.xml; this fork's military.xml also includes
+    # development.xml (upstream MAVLink-M only includes common.xml). Stage every
+    # included dialect next to the files mavgen/docs resolve by relative path.
     with tempfile.TemporaryDirectory() as defs:
-        for name in ("common", "standard", "minimal"):
+        for name in ("common", "standard", "minimal", "development"):
             shutil.copy(os.path.join(mavlink_dir, "message_definitions", "v1.0", f"{name}.xml"), defs)
         shutil.copy(os.path.join(ROOT, "military.xml"), defs)
         shutil.copy(os.path.join(ROOT, "tritri.xml"), defs)

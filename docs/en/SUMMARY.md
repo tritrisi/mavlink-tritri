@@ -6,6 +6,7 @@
   - [tritri.xml](messages/tritri.md)
   - [military.xml](messages/military.md)
   - [common.xml](messages/common.md)
+  - [development.xml](messages/development.md)
   - [standard.xml](messages/standard.md)
   - [minimal.xml](messages/minimal.md)
 - [Guide](guide/index.md)

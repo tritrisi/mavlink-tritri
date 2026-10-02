@@ -30,6 +30,6 @@ python3 "$pymavlink_dir/tools/mavgen.py" \
 	"$defs/tritri.xml"
 
 mkdir -p "$out_dir/message_definitions"
-for xml in tritri military common standard minimal; do
+for xml in tritri military common standard minimal development; do
 	cp "$defs/$xml.xml" "$out_dir/message_definitions/"
 done
