@@ -5,6 +5,8 @@
   --vp-c-brand-2: #38804b;
   --vp-c-brand-3: #1d4e2b;
   --vp-c-brand-soft: rgba(74, 154, 94, 0.14);
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #4a9a5e 30%, #38804b);
 }
 
 .dark {

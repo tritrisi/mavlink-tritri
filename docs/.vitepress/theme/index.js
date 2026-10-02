@@ -1,14 +1,15 @@
 import DefaultTheme from "vitepress/theme";
 import { inBrowser } from "vitepress";
 import { h, onMounted } from "vue";
-import HeroTritri from "./components/HeroTritri.vue";
+import HeroInfo from "./components/HeroInfo.vue";
 import "./style.css";
 
 export default {
   extends: DefaultTheme,
   Layout: () =>
     h(DefaultTheme.Layout, null, {
-      "home-hero-actions-after": () => h(HeroTritri),
+      // Logo + title as the first hero content (not under the action buttons).
+      "home-hero-info": () => h(HeroInfo),
     }),
   setup() {
     // The generated message pages are long enough that the initial anchor jump

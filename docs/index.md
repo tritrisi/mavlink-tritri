@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: TRITRI
-  tagline: MAVLink-M plus private COP messages for Speed0 counter-UAS command and control.
+  tagline: MAVLink dialect for Speed0 counter-UAS — MAVLink-M engagement plus lean C2 track messages.
   actions:
     - theme: brand
       text: Introduction
@@ -21,8 +21,8 @@ hero:
 features:
   - title: Built on MAVLink-M
     details: Includes the shared MAVLink-M dialect and common.xml. Drops into any MAVLink 2 stack.
-  - title: Private COP path
-    details: TRITRI_TRACK and TRITRI_TARGET carry Speed0 live air picture over the reserved 53900–53999 block.
+  - title: Lean C2 track messages
+    details: TRITRI_TRACK (53900) and TRITRI_TARGET (53901) are bandwidth-trimmed COP types for the LoRa C2 path — identity and kinematics correlated by track_uid.
   - title: Shared engagement vocabulary
     details: Handover, fires, directives, and BDA stay on the shared MAVLink-M IDs for interop.
   - title: Generated C headers
