@@ -18,7 +18,11 @@ export default defineConfig({
   head: [["link", { rel: "icon", href: `${base}favicon.svg`, type: "image/svg+xml" }]],
 
   themeConfig: {
-    siteTitle: "TRITRI",
+    logo: {
+      src: "/site/tritri_logo.svg",
+      alt: "TRITRI",
+    },
+    siteTitle: "MAVLink",
     sidebar: sidebar("en"),
     externalLinkIcon: true,
     search: { provider: "local" },

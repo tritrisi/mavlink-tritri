@@ -1,14 +1,14 @@
 import DefaultTheme from "vitepress/theme";
 import { inBrowser } from "vitepress";
 import { h, onMounted } from "vue";
-import HeroDronecode from "./components/HeroDronecode.vue";
+import HeroTritri from "./components/HeroTritri.vue";
 import "./style.css";
 
 export default {
   extends: DefaultTheme,
   Layout: () =>
     h(DefaultTheme.Layout, null, {
-      "home-hero-actions-after": () => h(HeroDronecode),
+      "home-hero-actions-after": () => h(HeroTritri),
     }),
   setup() {
     // The generated message pages are long enough that the initial anchor jump
